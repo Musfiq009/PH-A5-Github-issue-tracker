@@ -1,11 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- google font-Geist link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- daisy UI and tailwind css link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- font awesome link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>GitHub Issue Tracker - Sign in</title>
-</head>
-<body>
-    
-</body>
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <main
+      class="bg-base-100 max-w-lg mx-auto rounded-lg p-8 text-center space-y-6 shadow-sm"
+    >
+      <div class="space-y-6">
+        <div class="flex justify-center">
+          <img src="./assets/github-logo.png" alt="github-logo" />
+        </div>
+        <div class="">
+          <h1 class="font-semibold text-2xl">GitHub Issues Tracker</h1>
+          <p class="text-[#64748B]">Sign in to manage your issues</p>
+        </div>
+      </div>
+      <div class="flex flex-col items-start space-y-4">
+        <label class="font-medium" for="Enter Username">Username</label>
+        <input
+          class="w-full p-4 border-zinc-300 rounded-lg"
+          type="text"
+          name="Username"
+          id="username-input"
+          placeholder="Enter Username"
+        />
+        <label class="font-medium" for="Password">Password</label>
+        <input
+          class="w-full p-4 border-zinc-300 rounded-lg"
+          type="password"
+          name="Password"
+          id="password-input"
+          placeholder="Enter Password"
+        />
+      </div>
+      <div class="">
+        <button onclick="validateCredential()" class="btn btn-primary w-full">Sign In</button>
+      </div>
+      <div class="relative mt-3">
+        <p class="absolute -top-3 right-[45.5%] z-10 bg-base-100 w-10">OR</p>
+        <hr class="z-0 text-zinc-300" />
+      </div>
+      <div>
+        <p class="text-[#64748B] text-[14px]">Demo Credentials:</p>
+        <div class="p-6">
+            <p><span class="font-semibold">Username:</span> admin</p>
+            <p><span class="font-semibold">Password:</span> admin123</p>
+        </div>
+      </div>
+    </main>
+    <script src="./scripts/signIn.js"></script>
+  </body>
 </html>
