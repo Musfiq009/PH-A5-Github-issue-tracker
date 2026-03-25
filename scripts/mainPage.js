@@ -6,7 +6,7 @@ const tabActive = (tab) => {
     allTab.classList.remove("btn-soft");
     openTab.classList.add("btn-soft");
     closedTab.classList.add("btn-soft");
-
+    loadSpinner(true);
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
       .then((res) => res.json())
       .then((datas) => loadCards(datas, tab));
@@ -14,6 +14,7 @@ const tabActive = (tab) => {
     openTab.classList.remove("btn-soft");
     allTab.classList.add("btn-soft");
     closedTab.classList.add("btn-soft");
+    loadSpinner(true);
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
       .then((res) => res.json())
       .then((datas) => loadCards(datas, tab));
@@ -21,6 +22,7 @@ const tabActive = (tab) => {
     closedTab.classList.remove("btn-soft");
     allTab.classList.add("btn-soft");
     openTab.classList.add("btn-soft");
+    loadSpinner(true);
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
       .then((res) => res.json())
       .then((datas) => loadCards(datas, tab));
@@ -32,6 +34,16 @@ const updateIssueCount = (count) => {
   issuesCount.innerText = `${count} Issues`;
 };
 
+const loadSpinner = (status) => {
+  if (status) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("card-container").classList.add("hidden");
+  } else {
+    document.getElementById("card-container").classList.remove("hidden");
+    document.getElementById("spinner").classList.add("hidden");
+  }
+};
+
 const loadCards = (data, tab) => {
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = "";
@@ -41,32 +53,31 @@ const loadCards = (data, tab) => {
 
   updateIssueCount(filteredData.length);
 
+  for (let d of filteredData) {
+    const card = document.createElement("div");
 
-    for (let d of filteredData) {
-      const card = document.createElement("div");
+    const labelsHTML = d.labels
+      .map((label) => {
+        if (label === "bug") {
+          return `<div class="badge badge-outline badge-error">BUG</div>`;
+        }
+        if (label === "help wanted") {
+          return `<div class="badge badge-outline badge-warning">HELP WANTED</div>`;
+        }
+        if (label === "enhancement") {
+          return `<div class="badge badge-outline badge-success">ENHANCEMENT</div>`;
+        }
+        if (label === "good first issue") {
+          return `<div class="badge badge-outline badge-info">GOOD FIRST ISSUE</div>`;
+        }
+        if (label === "documentation") {
+          return `<div class="badge badge-outline badge-accent">DOCUMENTATION</div>`;
+        }
+        return "";
+      })
+      .join("");
 
-      const labelsHTML = d.labels
-        .map((label) => {
-          if (label === "bug") {
-            return `<div class="badge badge-outline badge-error">BUG</div>`;
-          }
-          if (label === "help wanted") {
-            return `<div class="badge badge-outline badge-warning">HELP WANTED</div>`;
-          }
-          if (label === "enhancement") {
-            return `<div class="badge badge-outline badge-success">ENHANCEMENT</div>`;
-          }
-          if (label === "good first issue") {
-            return `<div class="badge badge-outline badge-info">GOOD FIRST ISSUE</div>`;
-          }
-          if (label === "documentation") {
-            return `<div class="badge badge-outline badge-accent">DOCUMENTATION</div>`;
-          }
-          return "";
-        })
-        .join("");
-
-      card.innerHTML = `
+    card.innerHTML = `
         <div class="card p-4 shadow-sm bg-base-100 space-y-3 h-full ${d.status === "open" ? "border-t-4 border-green-600" : "border-t-4 border-purple-600"}">
           <div class="flex justify-between">
             <div>
@@ -89,9 +100,25 @@ const loadCards = (data, tab) => {
         </div>
       `;
 
-      cardContainer.appendChild(card);
-    }
+    cardContainer.appendChild(card);
+  }
+  loadSpinner(false);
 };
 
+const searchIssues = () => {
+  const searchInput = document
+    .getElementById("search-issue")
+    .value.toLowerCase();
+  loadSpinner(true);
+
+  fetch(
+    `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput}`,
+  )
+    .then((res) => res.json())
+    .then((datas) => {
+      updateIssueCount(datas.data.length);
+      loadCards(datas, "all");
+    });
+};
 
 tabActive("all");
