@@ -73,9 +73,27 @@
     <main class="py-4 md:py-16 max-w-6xl mx-auto space-y-4">
       <section class="py-6 px-6 bg-base-100 rounded-lg shadow-sm">
         <div class="flex gap-2 flex-wrap justify-center md:justify-normal">
-          <button id="all-tab" onclick="tabActive('all')" class="btn btn-soft btn-primary w-32">All</button>
-          <button id="open-tab" onclick="tabActive('open')" class="btn btn-soft btn-primary w-32">Open</button>
-          <button id="closed-tab" onclick="tabActive('closed')" class="btn btn-soft btn-primary w-32">closed</button>
+          <button
+            id="all-tab"
+            onclick="tabActive('all')"
+            class="btn btn-soft btn-primary w-32"
+          >
+            All
+          </button>
+          <button
+            id="open-tab"
+            onclick="tabActive('open')"
+            class="btn btn-soft btn-primary w-32"
+          >
+            Open
+          </button>
+          <button
+            id="closed-tab"
+            onclick="tabActive('closed')"
+            class="btn btn-soft btn-primary w-32"
+          >
+            closed
+          </button>
         </div>
       </section>
       <section class="bg-base-100 rounded-lg shadow-sm">
@@ -98,8 +116,13 @@
             <p>Closed</p>
           </div>
         </div>
-        <hr>
-        <div id="card-container"></div>
+        <hr class="text-zinc-300" />
+        <div
+          id="card-container"
+          class="p-6 bg-[#FBFBFB] grid grid-cols-4 gap-3"
+        >
+          
+        </div>
       </section>
     </main>
     <script src="./scripts/mainPage.js"></script>

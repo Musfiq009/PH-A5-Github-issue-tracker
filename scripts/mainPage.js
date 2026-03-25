@@ -1,26 +1,79 @@
-const tabActive=(tab)=>{
-    const allTab= document.getElementById("all-tab");
-    const openTab = document.getElementById("open-tab");
-    const closedTab = document.getElementById("closed-tab");
-    if(tab === "all"){
-        allTab.classList.remove("btn-soft");
-        openTab.classList.add("btn-soft");
-        closedTab.classList.add("btn-soft");
+const tabActive = (tab) => {
+  const allTab = document.getElementById("all-tab");
+  const openTab = document.getElementById("open-tab");
+  const closedTab = document.getElementById("closed-tab");
+  if (tab === "all") {
+    allTab.classList.remove("btn-soft");
+    openTab.classList.add("btn-soft");
+    closedTab.classList.add("btn-soft");
 
-        fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-        .then((res)=> res.json())
-        .then((data)=> loadCards(data));
-    }else if(tab === "open"){
-        openTab.classList.remove("btn-soft");
-        allTab.classList.add("btn-soft");
-        closedTab.classList.add("btn-soft");
-    }else{
-        closedTab.classList.remove("btn-soft");
-        allTab.classList.add("btn-soft");
-        openTab.classList.add("btn-soft");
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+      .then((res) => res.json())
+      .then((datas) => loadCards(datas, tab));
+  } else if (tab === "open") {
+    openTab.classList.remove("btn-soft");
+    allTab.classList.add("btn-soft");
+    closedTab.classList.add("btn-soft");
+  } else {
+    closedTab.classList.remove("btn-soft");
+    allTab.classList.add("btn-soft");
+    openTab.classList.add("btn-soft");
+  }
+};
+
+const loadCards = (data, tab) => {
+  const cardContainer = document.getElementById("card-container");
+  cardContainer.innerHTML = "";
+
+  if (tab === "all") {
+    for (let d of data.data) {
+      const card = document.createElement("div");
+
+      const labelsHTML = d.labels
+        .map((label) => {
+          if (label === "bug") {
+            return `<div class="badge badge-outline badge-error">BUG</div>`;
+          }
+          if (label === "help wanted") {
+            return `<div class="badge badge-outline badge-warning">HELP WANTED</div>`;
+          }
+          if (label === "enhancement") {
+            return `<div class="badge badge-outline badge-success">ENHANCEMENT</div>`;
+          }
+          if (label === "good first issue") {
+            return `<div class="badge badge-outline badge-info">GOOD FIRST ISSUE</div>`;
+          }
+          if (label === "documentation") {
+            return `<div class="badge badge-outline badge-accent">DOCUMENTATION</div>`;
+          }
+          return "";
+        })
+        .join("");
+
+      card.innerHTML = `
+        <div class="card p-4 shadow-sm bg-base-100 space-y-3 h-full ${d.status === "open" ? "border-t-4 border-green-600" : "border-t-4 border-purple-600"}">
+          <div class="flex justify-between">
+            <div>
+              <img src="./assets/${d.status === "open" ? "Open-Status.png" : "Closed- Status .png"}" alt="status" />
+            </div>
+            <div class="badge badge-soft badge-error">${d.priority}</div>
+          </div>
+          <div class="space-y-2">
+            <h1 class="text-[14px] font-semibold">${d.title}</h1>
+            <p class="text-[12px] text-[#64748B]">${d.description}</p>
+            <div class="label-container flex flex-wrap gap-1">
+              ${labelsHTML}
+            </div>
+          </div>
+          <hr class="text-zinc-300"/>
+          <div class="space-y-2">
+            <p class="text-[12px] text-[#64748B]">#${d.id} by ${d.author}</p>
+            <p class="text-[12px] text-[#64748B]">${new Date(d.createdAt).toLocaleDateString()}</p>
+          </div>
+        </div>
+      `;
+
+      cardContainer.appendChild(card);
     }
-}
-
-const loadCards = (data)=>{
-    console.log(data);
-}
+  }
+};
