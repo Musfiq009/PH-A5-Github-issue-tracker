@@ -14,19 +14,35 @@ const tabActive = (tab) => {
     openTab.classList.remove("btn-soft");
     allTab.classList.add("btn-soft");
     closedTab.classList.add("btn-soft");
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+      .then((res) => res.json())
+      .then((datas) => loadCards(datas, tab));
   } else {
     closedTab.classList.remove("btn-soft");
     allTab.classList.add("btn-soft");
     openTab.classList.add("btn-soft");
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+      .then((res) => res.json())
+      .then((datas) => loadCards(datas, tab));
   }
+};
+
+const updateIssueCount = (count) => {
+  const issuesCount = document.getElementById("issues-count");
+  issuesCount.innerText = `${count} Issues`;
 };
 
 const loadCards = (data, tab) => {
   const cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = "";
 
-  if (tab === "all") {
-    for (let d of data.data) {
+  const filteredData =
+    tab === "all" ? data.data : data.data.filter((d) => d.status === tab);
+
+  updateIssueCount(filteredData.length);
+
+
+    for (let d of filteredData) {
       const card = document.createElement("div");
 
       const labelsHTML = d.labels
@@ -75,5 +91,7 @@ const loadCards = (data, tab) => {
 
       cardContainer.appendChild(card);
     }
-  }
 };
+
+
+tabActive("all");
